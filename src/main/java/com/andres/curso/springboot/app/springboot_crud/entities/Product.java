@@ -8,6 +8,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -31,7 +32,7 @@ public class Product {
     @NotNull //? Validacion de campo no nulo, para los demas tipos, a excepcion de String
     private Integer price;
 
-    @Valid
+    @NotBlank //? Es mejor que un NotEmpty, ya que valida que no sea un espacio en blanco, aparte de que no sea vacio
     private String description;
 
     public Long getId() {

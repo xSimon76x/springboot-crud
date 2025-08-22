@@ -11,11 +11,12 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "users")  
-public class Users {
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +34,42 @@ public class Users {
         inverseJoinColumns = @JoinColumn(name = "role_id"),
         uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})}
     )
+    
     private List<Role> rols;
+
+    @Transient
+    private boolean admin;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public List<Role> getRols() {
+        return rols;
+    }
+
+    public void setRols(List<Role> rols) {
+        this.rols = rols;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
 
 }

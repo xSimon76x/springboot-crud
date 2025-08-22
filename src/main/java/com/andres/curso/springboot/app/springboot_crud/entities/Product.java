@@ -5,6 +5,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "products")
@@ -14,8 +21,17 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotEmpty //? Validacion de campo no vacio. Para string no sirve el @NotNull
+    @Size(min = 3, max = 20) //? Validacion de longitud minima y maxima, solo para String
     private String name;
+
+    //@Pattern//? Validacion para aplicar una expresion regular
+    @Min(value = 1) //? Validacion de valor minimo
+    @Max(value = 10000) //? Validacion de valor maximo
+    @NotNull //? Validacion de campo no nulo, para los demas tipos, a excepcion de String
     private Integer price;
+
+    @Valid
     private String description;
 
     public Long getId() {

@@ -64,5 +64,11 @@ public class ProductServiceImpl implements ProductServices{
         return productOptional;
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public boolean existsBySku(String sku) {
+        return repository.existsBySku(sku);
+    }
+
 
 }

@@ -1,5 +1,6 @@
 package com.andres.curso.springboot.app.springboot_crud.entities;
 
+import com.andres.curso.springboot.app.springboot_crud.validation.IsExistsDb;
 import com.andres.curso.springboot.app.springboot_crud.validation.IsRequired;
 
 import jakarta.persistence.Entity;
@@ -44,6 +45,10 @@ public class Product {
     @IsRequired //? Anotación personalizada para validar que no sea nulo, vacío o solo espacios en blanco
     private String description;
 
+    @IsExistsDb //? Anotación personalizada para validar que no exista en la base de datos
+    @IsRequired
+    private String sku;
+
     public Long getId() {
         return id;
     }
@@ -74,6 +79,14 @@ public class Product {
     
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getSku() {
+        return sku;
+    }
+
+    public void setSku(String sku) {
+        this.sku = sku;
     }
 
 }

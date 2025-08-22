@@ -18,21 +18,26 @@ import jakarta.validation.constraints.Size;
 @Table(name = "products")
 public class Product {
 
+    //* Si uno define @NotEmpty por ejemplo, sin mensaje personalizado, considera el mensaje por defecto que tiene el app  */
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotEmpty //? Validacion de campo no vacio. Para string no sirve el @NotNull
+    // @NotEmpty //? Validacion de campo no vacio. Para string no sirve el @NotNull
+    @NotEmpty(message = "{NotEmpty.product.name}") //? Mensaje personalizado
     @Size(min = 3, max = 20) //? Validacion de longitud minima y maxima, solo para String
     private String name;
 
     //@Pattern//? Validacion para aplicar una expresion regular
     @Min(value = 1) //? Validacion de valor minimo
     @Max(value = 10000) //? Validacion de valor maximo
-    @NotNull //? Validacion de campo no nulo, para los demas tipos, a excepcion de String
+    // @NotNull //? Validacion de campo no nulo, para los demas tipos, a excepcion de String
+    @NotNull(message = "{NotNull.product.price}") //? Mensaje personalizado
     private Integer price;
 
-    @NotBlank //? Es mejor que un NotEmpty, ya que valida que no sea un espacio en blanco, aparte de que no sea vacio
+    // @NotBlank //? Es mejor que un NotEmpty, ya que valida que no sea un espacio en blanco, aparte de que no sea vacio
+    @NotBlank(message = "{NotBlank.product.description}") //? Mensaje personalizado
     private String description;
 
     public Long getId() {

@@ -15,13 +15,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.andres.curso.springboot.app.springboot_crud.ProductValidation;
+// import com.andres.curso.springboot.app.springboot_crud.ProductValidation;
 import com.andres.curso.springboot.app.springboot_crud.entities.Product;
 import com.andres.curso.springboot.app.springboot_crud.services.ProductServices;
 
 import jakarta.validation.Valid;
 
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -37,7 +36,7 @@ public class ProductController {
     private ProductServices service;
 
     @Autowired
-    private ProductValidation validate;
+    // private ProductValidation validate;
 
     @GetMapping
     public List<Product> list() {
@@ -58,7 +57,7 @@ public class ProductController {
         @Valid @RequestBody Product product, 
         BindingResult result //? Debe estar siempre a la derecha del Obj que vamos a validar, en este caso el body de Product
     ) {
-        validate.validate(product, result);
+        // validate.validate(product, result);
         if (result.hasFieldErrors()) {
             return validation(result);
         }
@@ -73,7 +72,7 @@ public class ProductController {
         @Valid @RequestBody Product product, 
         BindingResult result //? Servira para poder capturar los errores de validacion
     ) {
-        validate.validate(product, result);
+        // validate.validate(product, result);
         if (result.hasFieldErrors()) {
             return validation(result);
         }

@@ -1,5 +1,7 @@
 package com.andres.curso.springboot.app.springboot_crud.entities;
 
+import com.andres.curso.springboot.app.springboot_crud.validation.IsRequired;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,7 +27,8 @@ public class Product {
     private Long id;
 
     // @NotEmpty //? Validacion de campo no vacio. Para string no sirve el @NotNull
-    @NotEmpty(message = "{NotEmpty.product.name}") //? Mensaje personalizado
+    @IsRequired(message = "{IsRequired.product.name}") //? Anotación personalizada para validar que no sea nulo, vacío o solo espacios en blanco
+    // @NotEmpty(message = "{NotEmpty.product.name}") //? Mensaje personalizado
     @Size(min = 3, max = 20) //? Validacion de longitud minima y maxima, solo para String
     private String name;
 
@@ -37,7 +40,8 @@ public class Product {
     private Integer price;
 
     // @NotBlank //? Es mejor que un NotEmpty, ya que valida que no sea un espacio en blanco, aparte de que no sea vacio
-    @NotBlank(message = "{NotBlank.product.description}") //? Mensaje personalizado
+    // @NotBlank(message = "{NotBlank.product.description}") //? Mensaje personalizado
+    @IsRequired //? Anotación personalizada para validar que no sea nulo, vacío o solo espacios en blanco
     private String description;
 
     public Long getId() {

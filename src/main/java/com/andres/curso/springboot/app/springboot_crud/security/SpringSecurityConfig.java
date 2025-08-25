@@ -20,6 +20,7 @@ public class SpringSecurityConfig {
 
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        //? Configuramos las reglas de seguridad
         return http.authorizeHttpRequests(
             ( authz ) -> authz
             .requestMatchers(HttpMethod.GET, "/api/users").permitAll() //? Endpoint publico para crear usuarios, cualquier usuario puede acceder a este endpoint

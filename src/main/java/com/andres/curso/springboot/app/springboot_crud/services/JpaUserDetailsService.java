@@ -24,6 +24,7 @@ public class JpaUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        //? Buscar el usuario por username
         Optional<User> userOptional = userRepository.findByUsername(username);
 
         if (!userOptional.isEmpty()) {
@@ -32,10 +33,12 @@ public class JpaUserDetailsService implements UserDetailsService {
 
         User user = userOptional.orElseThrow();
 
+        //? Convertir la lista de roles en una lista de GrantedAuthority (que es lo que usa Spring Security)
         List<GrantedAuthority> authorities = user.getRols().stream()
             .map( role -> new SimpleGrantedAuthority(role.getName()))
             .collect(Collectors.toList());
 
+        //? Retornar un UserDetails (que es lo que usa Spring Security)
         return new org.springframework.security.core.userdetails.User(
             user.getUsername(),
             user.getPassword(),

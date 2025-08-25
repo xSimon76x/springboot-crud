@@ -1,8 +1,10 @@
 package com.andres.curso.springboot.app.springboot_crud.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
@@ -38,6 +40,7 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY) //? Solo entra (create/update), pero no aparece en las respuestas (get)
     private String password;
 
+    @JsonIgnoreProperties({"users", "handler", "hibernateLazyInitializer"}) //? Evitamos el bucle infinito al serializar la respuesta. Entonces, evitamos los usuarios dentro de los roles 
     @ManyToMany
     @JoinTable(
         name = "users_rols",
@@ -51,7 +54,12 @@ public class User {
     private boolean enabled; 
 
     @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean admin;
+
+    public User() {
+        rols = new ArrayList<>();
+    }
 
     @PrePersist
     public void prePersist() {

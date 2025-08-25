@@ -17,7 +17,6 @@ import com.andres.curso.springboot.app.springboot_crud.services.UserService;
 import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -41,6 +40,12 @@ public class UserController {
             return validation(result);
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(user));
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@Valid @RequestBody User user, BindingResult result) {
+        user.setAdmin(false); // Registramos siempre como usuario normal
+        return create(user, result);
     }
     
     private ResponseEntity<?> validation(BindingResult result) {

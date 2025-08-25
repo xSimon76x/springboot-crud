@@ -42,6 +42,8 @@ public class User {
     
     private List<Role> rols;
 
+    private boolean enabled;
+
     @Transient
     private boolean admin;
 
@@ -67,6 +69,14 @@ public class User {
 
     public void setRols(List<Role> rols) {
         this.rols = rols;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
     public boolean isAdmin() {

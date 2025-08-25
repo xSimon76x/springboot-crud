@@ -1,6 +1,8 @@
 package com.andres.curso.springboot.app.springboot_crud.security.filter;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,6 +12,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.andres.curso.springboot.app.springboot_crud.entities.User;
@@ -17,20 +20,20 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import static com.andres.curso.springboot.app.springboot_crud.security.TokenJwtConfig.*;
+
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter { 
     //? Clase Filtro para autenticar y generar el token JWT
     //? Se ejecuta cuando se hace una peticion a /login con el metodo POST
 
     private AuthenticationManager authenticationManager;
-
-    //? Clave secreta para firmar el token
-    private static final SecretKey SECRET_KEY = Jwts.SIG.HS256.key().build();
 
     public JwtAuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -69,15 +72,28 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         FilterChain chain,
         Authentication authResult
     ) throws IOException, ServletException {
-        User user = (User) authResult.getPrincipal();
-        String username = user.getUsername();
+        //? Para mas informacion de esto, en este repositorio: https://github.com/jwtk/jjwt
+        // El cual viene de esta web de JWT: https://www.jwt.io/libraries?programming_language=java 
+
         Map<String, String> body = new HashMap<>();
-        
+        User user = (User) authResult.getPrincipal(); //? Obtenemos el usuario autenticado
+        String username = user.getUsername();
+        Collection<? extends GrantedAuthority> roles = authResult.getAuthorities(); //? Obtenemos los roles del usuario autenticado
+
+        Claims claims = Jwts.claims().build(); //? Creamos los claims del token, que es la informacion que queremos guardar en el token
+        claims.put("authorities", roles); //? Agregamos los roles a los claims
+
         //? Generamos el token, firmandolo con la clave secreta, y poniendole el username como subject
-        String token = Jwts.builder().subject(username).signWith(SECRET_KEY).compact();
+        String token = Jwts.builder()
+            .subject(username)
+            .claims(claims) //? Agregamos los claims al token
+            .expiration(new Date(System.currentTimeMillis() + 3600000)) //? 1 hora de expiracion
+            .issuedAt(new Date()) //? Fecha de creacion
+            .signWith(SECRET_KEY)
+            .compact();
 
         //? Lo agregamos en la respuesta
-        response.addHeader("Authorization", "Bearer " + token);
+        response.addHeader(HEADER_AUTHORIZATION, PREFIX_TOKEN + token);
 
         body.put(token, token);
         body.put("username", username);

@@ -80,6 +80,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         Claims claims = Jwts.claims()
             .add("authorities", roles) //? Agregamos los roles a los claims
+            .add("username", username) //? Agregamos los roles a los claims
         .build(); //? Creamos los claims del token, que es la informacion que queremos guardar en el token
 
         //? Generamos el token, firmandolo con la clave secreta, y poniendole el username como subject

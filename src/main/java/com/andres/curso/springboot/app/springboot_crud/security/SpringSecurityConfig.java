@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.andres.curso.springboot.app.springboot_crud.security.filter.JwtAuthenticationFilter;
+import com.andres.curso.springboot.app.springboot_crud.security.filter.JwtValidationFilter;
 
 @Configuration
 public class SpringSecurityConfig {
@@ -44,6 +45,7 @@ public class SpringSecurityConfig {
             .anyRequest().authenticated() //? Cualquier otra peticion, debe estar autenticada
         )
         .addFilter(new JwtAuthenticationFilter(authenticationManager())) //? Agregamos el filtro de autenticacion, que se ejecuta cuando se hace una peticion a /login
+        .addFilter(new JwtValidationFilter(authenticationManager())) //? Agregamos el filtro de validacion, que se ejecuta en cada peticion para validar el token JWT
         .csrf( config -> config.disable() ) //? Deshabilitamos el CSRF, ya que no estamos usando sesiones
         .sessionManagement( management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS) ) //? Indicamos que no usaremos sesiones
         .build(); //? Construimos el filtro de seguridad

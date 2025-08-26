@@ -42,6 +42,11 @@ public class SpringSecurityConfig {
             ( authz ) -> authz
             .requestMatchers(HttpMethod.GET, "/api/users").permitAll() //? Endpoint publico para crear usuarios, cualquier usuario puede acceder a este endpoint
             .requestMatchers(HttpMethod.POST, "/api/users/**").permitAll() //? Endpoint publico para crear usuarios, cualquier usuario puede acceder a este endpoint
+            .requestMatchers(HttpMethod.POST, "/api/users").hasRole("ADMIN") //? Endpoint protegido, solo los usuarios con rol ADMIN pueden acceder a este endpoint 
+            .requestMatchers(HttpMethod.GET, "/api/products", "/api/products/{id}").hasAnyRole("ADMIN", "USER") //? Endpoint protegido, solo los usuarios con rol ADMIN pueden acceder a este endpoint 
+            .requestMatchers(HttpMethod.POST, "/api/products").hasRole("ADMIN") //? Endpoint protegido, solo los usuarios con rol ADMIN pueden acceder a este endpoint 
+            .requestMatchers(HttpMethod.PUT, "/api/products/{id}").hasRole("ADMIN") //? Endpoint protegido, solo los usuarios con rol ADMIN pueden acceder a este endpoint 
+            .requestMatchers(HttpMethod.DELETE, "/api/products/{id}").hasRole("ADMIN") //? Endpoint protegido, solo los usuarios con rol ADMIN pueden acceder a este endpoint 
             .anyRequest().authenticated() //? Cualquier otra peticion, debe estar autenticada
         )
         .addFilter(new JwtAuthenticationFilter(authenticationManager())) //? Agregamos el filtro de autenticacion, que se ejecuta cuando se hace una peticion a /login

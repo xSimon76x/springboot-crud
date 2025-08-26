@@ -61,20 +61,20 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
             String username = claims.getSubject();
             // String username2 = (String) claims.get("username"); //? Otra forma de obtener algun dato de los claims
             Object authoritiesClaims = claims.get("authorities");
-
+            
             //? Creamos un objeto Authentication con los datos del usuario y los roles
             Collection<? extends GrantedAuthority> authorities = Arrays.asList(
                 new ObjectMapper()
                 .addMixIn(SimpleGrantedAuthority.class, SimpleGrantedAuthorityJsonCreator.class)
                 .readValue(authoritiesClaims.toString().getBytes(), SimpleGrantedAuthority[].class)
             );
-
+            
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 username, //? nombre del usuario
                 null, //? password (no lo necesitamos) solo se usa en el login, en el attemptAuthentication
                 authorities //? roles
             );
-
+            
             SecurityContextHolder.getContext().setAuthentication(authToken); //? Seteamos el usuario autenticado en el contexto de seguridad
             chain.doFilter(request, response); //? Continuamos con la cadena de filtros
         } catch (Exception e) {

@@ -6,8 +6,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.crypto.SecretKey;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -100,8 +98,25 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         body.put("message", String.format("Hola %s, has iniciado sesion con exito!", username));
 
         response.getWriter().write(new ObjectMapper().writeValueAsString(body));
-        response.setContentType("application/json");
+        response.setContentType(CONTENT_TYPE);
         response.setStatus(200);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(
+        HttpServletRequest request, 
+        HttpServletResponse response,
+        AuthenticationException failed
+    ) throws IOException, ServletException {
+        //? Si la autenticacion falla, se ejecuta este metodo
+        Map<String, String> body = new HashMap<>();
+        body.put("message", "Error de autenticacion: username o password incorrectos!");
+        body.put("error", failed.getMessage());
+
+        response.getWriter().write(new ObjectMapper().writeValueAsString(body));
+        response.setStatus(401);
+        response.setContentType(CONTENT_TYPE);
+        
     }
 
     

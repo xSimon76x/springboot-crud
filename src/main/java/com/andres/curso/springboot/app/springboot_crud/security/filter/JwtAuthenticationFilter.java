@@ -74,12 +74,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         // El cual viene de esta web de JWT: https://www.jwt.io/libraries?programming_language=java 
 
         Map<String, String> body = new HashMap<>();
-        User user = (User) authResult.getPrincipal(); //? Obtenemos el usuario autenticado
+        org.springframework.security.core.userdetails.User user = (org.springframework.security.core.userdetails.User) authResult.getPrincipal(); //? Obtenemos el usuario autenticado
         String username = user.getUsername();
         Collection<? extends GrantedAuthority> roles = authResult.getAuthorities(); //? Obtenemos los roles del usuario autenticado
 
-        Claims claims = Jwts.claims().build(); //? Creamos los claims del token, que es la informacion que queremos guardar en el token
-        claims.put("authorities", roles); //? Agregamos los roles a los claims
+        Claims claims = Jwts.claims()
+            .add("authorities", roles) //? Agregamos los roles a los claims
+        .build(); //? Creamos los claims del token, que es la informacion que queremos guardar en el token
 
         //? Generamos el token, firmandolo con la clave secreta, y poniendole el username como subject
         String token = Jwts.builder()
@@ -93,7 +94,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         //? Lo agregamos en la respuesta
         response.addHeader(HEADER_AUTHORIZATION, PREFIX_TOKEN + token);
 
-        body.put(token, token);
+        body.put("token", token);
         body.put("username", username);
         body.put("message", String.format("Hola %s, has iniciado sesion con exito!", username));
 

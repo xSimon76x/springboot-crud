@@ -48,6 +48,8 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
         String header = request.getHeader(HEADER_AUTHORIZATION);
 
         if (header == null || !header.startsWith(PREFIX_TOKEN)) {
+            //? Si el header es nulo o no empieza con Bearer, continuamos con la cadena de filtros
+            chain.doFilter(request, response);
             return;
         }
 

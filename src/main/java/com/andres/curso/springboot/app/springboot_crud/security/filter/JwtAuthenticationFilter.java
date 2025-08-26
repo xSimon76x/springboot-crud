@@ -79,7 +79,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         Collection<? extends GrantedAuthority> roles = authResult.getAuthorities(); //? Obtenemos los roles del usuario autenticado
 
         Claims claims = Jwts.claims()
-            .add("authorities", roles) //? Agregamos los roles a los claims
+            .add("authorities", new ObjectMapper().writeValueAsString(roles)) //? Agregamos los roles a los claims
             .add("username", username) //? Agregamos los roles a los claims
         .build(); //? Creamos los claims del token, que es la informacion que queremos guardar en el token
 

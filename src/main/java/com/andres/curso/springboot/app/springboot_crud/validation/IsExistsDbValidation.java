@@ -15,6 +15,9 @@ public class IsExistsDbValidation implements ConstraintValidator<IsExistsDb, Str
 
     @Override
     public boolean isValid(String value, jakarta.validation.ConstraintValidatorContext context) {
+        if (productServices == null) {
+            return true;
+        }
         return !productServices.existsBySku(value);
     }
 

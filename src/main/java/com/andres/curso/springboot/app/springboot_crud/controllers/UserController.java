@@ -17,12 +17,16 @@ import com.andres.curso.springboot.app.springboot_crud.services.UserService;
 
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-
-
+//? Esto es para permitir las peticiones desde otro origen (front-end) - CORS Parte 1
+@CrossOrigin(
+    // origins = {"http://localhost:4200"}) //Puede ser definir varios origenes, con su ruta.
+    originPatterns = "*" //Permitir todos los origenes.
+)
 @RestController
 @RequestMapping("/api/users")
 public class UserController {

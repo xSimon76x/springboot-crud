@@ -11,6 +11,7 @@
 	<groupId>com.andres.curso.springboot.app</groupId>
 	<artifactId>springboot-crud</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>war</packaging> <!-- Si no existe esta linea para definir que lo empaquete en .war, por defecto sera en .jar -->
 	<name>springboot-crud</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
@@ -37,6 +38,11 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-tomcat</artifactId>
+			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
@@ -83,6 +89,8 @@
 	</dependencies>
 
 	<build>
+		<!-- Sino esta, uno puede definirle cualquier nombre -->
+		<finalName>${artifactId}</finalName> <!-- Para que el .war generado tenga el nombre del mismo proyecto osea: springboot-crud -->
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
